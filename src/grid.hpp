@@ -10,7 +10,7 @@ public:
 		Element(double val = 0, bool isBlock = false);
 		double& val();
 		bool& isBlock();
-		operator double();
+		operator double(); //this is for convenience, does the same thing as val(), but read-only
 	};
 
 private:
