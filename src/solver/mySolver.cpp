@@ -2,7 +2,7 @@
 
 namespace server_side {
 
-std::string MyTestSolver::solve(OperatorID& op) {
+std::string MySolver::solve(OperatorID& op) {
 	return op.solve();
 }
 
