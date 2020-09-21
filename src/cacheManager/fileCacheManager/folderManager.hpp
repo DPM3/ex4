@@ -3,6 +3,8 @@
 #include<string>
 #include<vector>
 
+namespace server_side {
+
 class FolderManager {
 public:
 	static constexpr int s_maxSize = 69; //NICE
@@ -75,3 +77,5 @@ private:
      */
 	void remove(std::string const& fileName);
 };
+
+}

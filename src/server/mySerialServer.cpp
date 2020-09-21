@@ -5,12 +5,19 @@
 #include<sys/types.h>
 #include<sys/socket.h>
 #include<unistd.h>
+#include<thread>
+#include<sstream>
+
+namespace server_side {
 
 void MySerialServer::open(int port, ClientHandler const& c) {
 	const int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0) {
 		throw std::system_error { errno, std::system_category() };
 	}
+	int True = 1;
+	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &True, sizeof(int));
+
 	sockaddr_in connectAddress{};
 	if (0 == inet_aton("127.0.0.1", &connectAddress.sin_addr)) {
 		close(sockfd);
@@ -18,23 +25,50 @@ void MySerialServer::open(int port, ClientHandler const& c) {
 	}
 	connectAddress.sin_family = AF_INET;
 	connectAddress.sin_port = htons(port);
-	if (0 > connect(sockfd, reinterpret_cast<const sockaddr*>(&connectAddress),
-	                sizeof(connectAddress))) {
+	if (bind(sockfd, reinterpret_cast<const sockaddr*>(&connectAddress), sizeof(connectAddress)) < 0) {
+		std::cout << "send\n";
 		close(sockfd);
 		throw std::system_error { errno, std::system_category() };
 	}
-	std::string buffer(1024, '\0');
-	const auto numBytesRead = read(sockfd, buffer.data(), buffer.size() - 1);
-	if (numBytesRead < 0) {
-		close(sockfd);
-		throw std::system_error { errno, std::system_category() };
-	}
-	buffer[numBytesRead] = '\0';
 
-	if (write(sockfd, "hello, world!", 13) < 0) {
+	if (listen(sockfd, 150) < 0) {
 		close(sockfd);
 		throw std::system_error { errno, std::system_category() };
 	}
+
+	std::thread serverAction {[=, &c, this]() {
+		int connectionfd;
+		int connectAddresslen = sizeof(connectAddress);
+		if ((connectionfd = accept(sockfd, (struct sockaddr*)&connectAddress,
+						(socklen_t*)&connectAddresslen)) < 0) {
+			throw std::system_error { errno, std::system_category() };
+		}
+		std::stringstream is;
+		char buffer[1024];
+		int recvLength;
+
+		if ((recvLength = recv(connectionfd, buffer, 1024, 0)) < 0) {
+			close(connectionfd);
+			close(sockfd);
+			throw std::system_error { errno, std::system_category() };
+		}
+		buffer[recvLength] = '\0';
+		is << std::string(buffer);
+		std::stringstream os;
+		c.handleClient(is, os);
+		std::string s = os.str();
+		if (send(connectionfd, s.c_str(), s.size(), 0) < 0) {
+			close(connectionfd);
+			close(sockfd);
+			throw std::system_error { errno, std::system_category() };
+		}
+		close(connectionfd);
+		close(sockfd);
+	}};
+	serverAction.detach();
 }
-void stop() {
+void MySerialServer::stop() {
+	m_stop = true;
+}
+
 }

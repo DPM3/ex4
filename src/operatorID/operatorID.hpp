@@ -2,6 +2,8 @@
 
 #include<string>
 
+namespace server_side {
+
 struct OperatorID {
 	/**
 	 * @brief returns an operator's hash code value
@@ -11,3 +13,5 @@ struct OperatorID {
 	 */
 	virtual std::string hash() const = 0;
 };
+
+}

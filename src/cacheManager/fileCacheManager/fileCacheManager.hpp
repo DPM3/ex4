@@ -4,6 +4,8 @@
 #include"../../operatorID/operatorID.hpp"
 #include"../cacheManager.hpp"
 
+namespace server_side {
+
 class FileCacheManager : public CacheManager {
 	FolderManager m_folderManager;
 public:
@@ -51,3 +53,5 @@ public:
 	std::string workPlace();
 	void save();
 };
+
+}

@@ -2,7 +2,7 @@
 #include<string>
 #include<fstream>
 #include<cstring>
-#include"sha1.hpp"
+#include"../sha1/sha1.hpp"
 #include"matrixIO.hpp"
 
 std::string OperatorID::hash(OperatorID op) {

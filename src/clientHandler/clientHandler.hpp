@@ -3,7 +3,7 @@
 namespace server_side {
 
 struct ClientHandler {
-	virtual void handleClient( std::istream const& is, std::ostream const& os) = 0;
+	virtual void handleClient(std::istream& is, std::ostream& os) const = 0;
 };
 
 }
