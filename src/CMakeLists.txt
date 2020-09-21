@@ -17,6 +17,23 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 add_library(mySerialServer      SHARED server/mySerialServer.cpp)
+
 add_library(myTestClientHandler SHARED clientHandler/myTestClientHandler.cpp)
+
+add_library(myTestOperatorID    SHARED operatorID/myTestOperatorID.cpp)
+add_library(operatorIDParser    SHARED operatorID/parser.cpp)
+add_library(myClientHandler     SHARED clientHandler/myClientHandler.cpp)
+target_link_libraries(myClientHandler myTestOperatorID operatorIDParser)
+
+add_library(mySolver            SHARED solver/mySolver.cpp)
+
+add_library(fileCacheManager    SHARED cacheManager/fileCacheManager/fileCacheManager.cpp)
+add_library(folderManager       SHARED cacheManager/fileCacheManager/folderManager.cpp)
+target_link_libraries(fileCacheManager folderManager myTestOperatorID)
+
+
 add_executable(test_basicServer tests/basicServer.cpp)
 target_link_libraries(test_basicServer mySerialServer myTestClientHandler Threads::Threads)
+
+add_executable(test_betterServer tests/betterServer.cpp)
+target_link_libraries(test_betterServer mySerialServer myClientHandler mySolver fileCacheManager)

@@ -15,8 +15,7 @@ void FileCacheManager::addOp(OperatorID const& id, std::string const& resultPath
 }
 std::string FileCacheManager::getResult(OperatorID const& id) {
 	std::ifstream is {workPlace() +"/"+ id.hash()};
-	std::string content {(std::istreambuf_iterator<char>(is)), std::istreambuf_iterator<char>()};
-	return content;
+	return std::string {(std::istreambuf_iterator<char>(is)), std::istreambuf_iterator<char>()};
 }
 std::string FileCacheManager::workPlace() {
 	return m_folderManager.folderPath();

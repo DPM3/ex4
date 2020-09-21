@@ -10,7 +10,7 @@ class MyClientHandler : public ClientHandler {
 	Solver& m_solver;
 	CacheManager& m_cacheManager;
 public:
-	MyClientHandler(Solver& solver, CacheManager& cacheManager);
+	MyClientHandler(Solver const& solver, CacheManager const& cacheManager);
 	void handleClient(std::istream& is, std::ostream& os) const override;
 };
 

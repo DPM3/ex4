@@ -1,4 +1,7 @@
+#pragma once
+
 #include"../operatorID/operatorID.hpp"
+
 namespace server_side {
 
 struct CacheManager {
