@@ -14,8 +14,6 @@ class MySerialServer : public Server {
 public:
 	void open(int port, ClientHandler const& c) override;
 	void stop() override;
-private:
-	void serverAction(int port, ClientHandler const* c);
 };
 
 }

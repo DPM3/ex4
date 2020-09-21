@@ -36,33 +36,35 @@ void MySerialServer::open(int port, ClientHandler const& c) {
 		throw std::system_error { errno, std::system_category() };
 	}
 
-	std::thread serverAction {[=, &c, this]() {
+	std::thread serverAction {[=, &c]() {
 		int connectionfd;
 		int connectAddresslen = sizeof(connectAddress);
-		if ((connectionfd = accept(sockfd, (struct sockaddr*)&connectAddress,
-						(socklen_t*)&connectAddresslen)) < 0) {
-			throw std::system_error { errno, std::system_category() };
-		}
-		std::stringstream is;
-		char buffer[1024];
-		int recvLength;
+		while (m_stop) {
+			if ((connectionfd = accept(sockfd, (struct sockaddr*)&connectAddress,
+							(socklen_t*)&connectAddresslen)) < 0) {
+				throw std::system_error { errno, std::system_category() };
+			}
+			std::stringstream is;
+			char buffer[1024];
+			int recvLength;
 
-		if ((recvLength = recv(connectionfd, buffer, 1024, 0)) < 0) {
+			if ((recvLength = recv(connectionfd, buffer, 1024, 0)) < 0) {
+				close(connectionfd);
+				close(sockfd);
+				throw std::system_error { errno, std::system_category() };
+			}
+			buffer[recvLength] = '\0';
+			is << std::string(buffer);
+			std::stringstream os;
+			c.handleClient(is, os);
+			std::string s = os.str();
+			if (send(connectionfd, s.c_str(), s.size(), 0) < 0) {
+				close(connectionfd);
+				close(sockfd);
+				throw std::system_error { errno, std::system_category() };
+			}
 			close(connectionfd);
-			close(sockfd);
-			throw std::system_error { errno, std::system_category() };
 		}
-		buffer[recvLength] = '\0';
-		is << std::string(buffer);
-		std::stringstream os;
-		c.handleClient(is, os);
-		std::string s = os.str();
-		if (send(connectionfd, s.c_str(), s.size(), 0) < 0) {
-			close(connectionfd);
-			close(sockfd);
-			throw std::system_error { errno, std::system_category() };
-		}
-		close(connectionfd);
 		close(sockfd);
 	}};
 	serverAction.detach();
