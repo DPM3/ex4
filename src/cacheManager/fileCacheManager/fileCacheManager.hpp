@@ -43,7 +43,7 @@ public:
      * @param[in] id. operation's info
      * @return string
      */
-	std::string getFileName(OperatorID const& id) override;
+	std::string getResult(OperatorID const& id) override;
 
 	/**
      * @brief returns mini cache's work place
