@@ -7,10 +7,11 @@
 namespace server_side {
 
 class MyClientHandler : public ClientHandler {
-	Solver& m_solver;
-	CacheManager& m_cacheManager;
+	Solver* m_solver;
+	CacheManager* m_cacheManager;
 public:
-	MyClientHandler(Solver const& solver, CacheManager const& cacheManager);
+	MyClientHandler(Solver* solver, CacheManager* cacheManager);
+	MyClientHandler(Solver&& solver, CacheManager&& cacheManager);
 	void handleClient(std::istream& is, std::ostream& os) const override;
 };
 

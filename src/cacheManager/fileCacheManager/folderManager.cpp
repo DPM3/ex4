@@ -6,6 +6,8 @@
 #include<exception>
 #include<iostream>
 
+namespace server_side {
+
 FolderManager::Marker& FolderManager::Marker::operator++() {
 	++m_index;
 	m_index -= m_index >= s_maxSize ? s_maxSize : 0;
@@ -28,7 +30,7 @@ FolderManager::Marker FolderManager::Marker::operator--(int) {
 	return result;
 }
 
-FolderManager::Marker::operator int() {
+FolderManager::Marker::operator int() const {
 	return m_index;
 }
 
@@ -63,7 +65,7 @@ void FolderManager::add(std::string const& fileName, std::string const& fileSour
 	}
 }
 
-bool FolderManager::fileExists(std::string const& fileName) {
+bool FolderManager::fileExists(std::string const& fileName) const {
 	for (auto fname : m_files) {
 		if (fname == fileName) {
 			return true;
@@ -79,15 +81,16 @@ void FolderManager::clear() {
 	m_marker.index() = 0;
 }
 
-void FolderManager::save() {
+void FolderManager::save() const {
 	std::ofstream stateFile (m_folderPath + "/STATE");
 	int startPoint = m_marker;
+	Marker marker = m_marker; //to remove const qualifier
 	do {
-		stateFile << m_files[m_marker++] << std::endl;
-	} while(m_marker != startPoint);
+		stateFile << m_files[marker++] << std::endl;
+	} while(marker != startPoint);
 }
 
-std::string FolderManager::folderPath() {
+std::string FolderManager::folderPath() const {
 	return m_folderPath;
 }
 
@@ -96,4 +99,6 @@ void FolderManager::remove(std::string const& fileName) {
 		!std::filesystem::is_directory(m_folderPath + fileName)) {
 		std::filesystem::remove(m_folderPath + "/" + fileName);
 	}
+}
+
 }

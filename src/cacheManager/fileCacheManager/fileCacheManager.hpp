@@ -27,7 +27,7 @@ public:
      * @param[in] id. operator's info
      * @return boolean
      */
-	bool isInCache(OperatorID const& id) override;
+	bool isInCache(OperatorID const& id) const override;
 
 	/**
      * @brief adds operation to mini cache
@@ -43,15 +43,15 @@ public:
      * @param[in] id. operation's info
      * @return string
      */
-	std::string getResult(OperatorID const& id) override;
+	std::string getResult(OperatorID const& id) const override;
 
 	/**
      * @brief returns mini cache's work place
      *
      * @return string
      */
-	std::string workPlace();
-	void save();
+	std::string workPlace() const;
+	void save() const;
 };
 
 }

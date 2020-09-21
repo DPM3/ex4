@@ -1,11 +1,7 @@
 #include"operatorID.hpp"
-#include<string>
-#include<fstream>
-#include<cstring>
-#include"../sha1/sha1.hpp"
-#include"matrixIO.hpp"
 
-std::string OperatorID::hash(OperatorID op) {
+/* //old...
+std::string hash(OperatorID op) {
 	std::ifstream ifs, ifs2;
 	std::string content = "";
 	std::string hash, hash2;
@@ -45,3 +41,4 @@ std::string OperatorID::hash(OperatorID op) {
 		default: return "kzlx;dgkilshjdfg;";
 	}
 }
+*/ //old stuff..

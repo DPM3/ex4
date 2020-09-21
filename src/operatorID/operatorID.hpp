@@ -16,4 +16,6 @@ struct OperatorID {
 	virtual ~OperatorID() = 0;
 };
 
+OperatorID::~OperatorID() { }
+
 }

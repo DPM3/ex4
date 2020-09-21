@@ -19,7 +19,7 @@ private:
 		Marker operator++(int);
 		Marker& operator--();
 		Marker operator--(int);
-		operator int();
+		operator int() const;
 		int& index();
 	};
 	Marker m_marker;
@@ -51,7 +51,7 @@ public:
      * @param[in] fileName. name of the file
      * @return boolean
      */
-	bool fileExists(std::string const& fileName);
+	bool fileExists(std::string const& fileName) const;
 
 	/**
      * @brief clears folder manager
@@ -61,14 +61,14 @@ public:
 	/**
      * @brief save
      */
-	void save();
+	void save() const;
 
 	/**
      * @brief returns path to folder
      *
      * @return string
      */
-	std::string folderPath();
+	std::string folderPath() const;
 private:
 	/**
      * @brief removes file (help for add function)

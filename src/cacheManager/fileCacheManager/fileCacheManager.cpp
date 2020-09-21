@@ -7,21 +7,21 @@ namespace server_side {
 
 FileCacheManager::FileCacheManager(std::string const& workPlace) : m_folderManager(workPlace) { }
 
-bool FileCacheManager::isInCache(OperatorID const& id) {
+bool FileCacheManager::isInCache(OperatorID const& id) const {
 	return m_folderManager.fileExists(id.hash());
 }
 void FileCacheManager::addOp(OperatorID const& id, std::string const& resultPath) {
 	m_folderManager.add(id.hash(), resultPath);
 }
-std::string FileCacheManager::getResult(OperatorID const& id) {
+std::string FileCacheManager::getResult(OperatorID const& id) const {
 	std::ifstream is {workPlace() +"/"+ id.hash()};
 	return std::string {(std::istreambuf_iterator<char>(is)), std::istreambuf_iterator<char>()};
 }
-std::string FileCacheManager::workPlace() {
+std::string FileCacheManager::workPlace() const {
 	return m_folderManager.folderPath();
 }
 
-void FileCacheManager::save() {
+void FileCacheManager::save() const {
 	m_folderManager.save();
 }
 

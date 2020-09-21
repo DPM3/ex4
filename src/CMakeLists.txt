@@ -36,4 +36,4 @@ add_executable(test_basicServer tests/basicServer.cpp)
 target_link_libraries(test_basicServer mySerialServer myTestClientHandler Threads::Threads)
 
 add_executable(test_betterServer tests/betterServer.cpp)
-target_link_libraries(test_betterServer mySerialServer myClientHandler mySolver fileCacheManager)
+target_link_libraries(test_betterServer mySerialServer myClientHandler mySolver fileCacheManager Threads::Threads)
