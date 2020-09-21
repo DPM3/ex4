@@ -12,6 +12,8 @@ struct OperatorID {
 	 * @return string
 	 */
 	virtual std::string hash() const = 0;
+	virtual std::string solve() const = 0;
+	virtual ~OperatorID() = 0;
 };
 
 }
