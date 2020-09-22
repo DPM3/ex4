@@ -27,11 +27,11 @@ std::string PathFindBFS::solve() const{
 		//
 		//Notice that since we go from the start outwards evenly(in bfs style),
 		//we will always get to the points with the shortest distance behind us the first time, so the distances are optimized.
-		for (GraphPoint a : getAdjTo(p)) {
+		for (GraphPoint a : m_grid.adjPoints(p)) {
 			if (distFromStart.find(a) == distFromStart.end()) { //checks if we already put a value for a
 				q.push(a);
 				distFromStart[a] = distFromStart[p] + 1;
-				prevOnCourse[a] = p;
+				prevOnCourse[a] = a.dirTo(p);
 			}
 		}
 	}
@@ -39,7 +39,7 @@ std::string PathFindBFS::solve() const{
 		//TODO: return that there is no possible path to the end point.
 	} else {
 		std::vector<Direction> courseInv; //the course from end to start
-		for (GraphPoint p = m_end; p != m_start; p = applyDir(p,prevOnCourse[p])) {
+		for (GraphPoint p = m_end; p != m_start; p = m_grid.getNeighbor(p,prevOnCourse[p])) {
 			courseInv.push_back(prevOnCourse[p]);
 		}
 	}
