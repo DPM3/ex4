@@ -5,4 +5,6 @@ enum class Direction {
 	UP, DOWN, LEFT, RIGHT
 };
 
-std::string tostring(Direction dir);
+std::string tostring(Direction);
+
+Direction opposite(Direction);

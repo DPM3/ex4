@@ -3,6 +3,7 @@
 #include<queue>
 #include<map>
 #include<unordered_map>
+#include<algorithm>
 
 #include"../graph/direction.hpp"
 
@@ -36,13 +37,22 @@ std::string PathFindBFS::solve() const{
 		}
 	}
 	if (distFromStart.find(m_end) == distFromStart.end()) {
-		//TODO: return that there is no possible path to the end point.
+		return ""; //no solution
 	} else {
+		size_t cost = 0; //size_t because it really does need to be that big.
 		std::vector<Direction> courseInv; //the course from end to start
 		for (GraphPoint p = m_end; p != m_start; p = m_grid.getNeighbor(p,prevOnCourse[p])) {
+			cost += m_grid(p).cost();
 			courseInv.push_back(prevOnCourse[p]);
 		}
+		std::string result = std::to_string(cost);
+		result += ",BFS";
+		std::for_each(courseInv.rbegin(), courseInv.rend(), [&result](Direction dir) {
+			result += "," + tostring(opposite(dir));
+		});
+		return result;
 	}
+
 }
 
 }

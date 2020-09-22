@@ -19,6 +19,7 @@ public:
 	};
 
 	Grid(std::initializer_list<std::initializer_list<Element>> init);
+	Grid(size_t height, size_t width);
 
 	Element& operator() (size_t i, size_t j);
 	Element  operator() (size_t i, size_t j) const;

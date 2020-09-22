@@ -4,7 +4,7 @@
 namespace server_side {
 
 Grid::Grid(std::initializer_list<std::initializer_list<Element>> init)
-	: m_width{init.begin()->size()}, m_height{init.size()}, m_data(m_width * m_height) {
+	: Grid{init.begin()->size(), init.size()} {
 
 	for (auto&& list : init) {
 	for (auto&& elem : list) {
@@ -12,6 +12,8 @@ Grid::Grid(std::initializer_list<std::initializer_list<Element>> init)
 	}
 	}
 }
+Grid::Grid(size_t width, size_t height)
+	: m_width{width}, m_height{height}, m_data(m_width * m_height) { }
 
 Element& Grid::operator() (size_t i, size_t j) {
 	return m_data[i * width() + j];

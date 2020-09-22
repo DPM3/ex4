@@ -8,7 +8,7 @@ class PathFindBFS : public PathFind {
 	using PathFind::m_grid;
 	using PathFind::m_start, PathFind::m_end;
 public:
-	std::string solve() const override;
+	std::string solve() const override; //returns the response wanted. Not the whole thing with the Version stuff
 };
 
 }

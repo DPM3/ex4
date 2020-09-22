@@ -3,16 +3,16 @@
 namespace server_side {
 
 class Element {
-	int m_cost;
+	float m_cost;
 	bool m_isBlock;
 public:
-	Element(int m_cost = 0);
+	Element(int cost = 0);
 
 	static Element block(); //to create a block
 
-	int& cost();
+	float& cost();
 	bool& isBlock();
-	int cost() const;
+	float cost() const;
 	bool isBlock() const;
 };
 

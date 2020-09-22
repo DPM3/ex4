@@ -12,3 +12,16 @@ std::string tostring(Direction dir) {
 			return "Right";
 	}
 }
+
+Direction opposite(Direction dir) {
+	switch (dir) {
+		case Direction::UP:
+			return Direction::DOWN;
+		case Direction::DOWN:
+			return Direction::UP;
+		case Direction::RIGHT:
+			return Direction::LEFT;
+		case Direction::LEFT:
+			return Direction::RIGHT;
+	}
+}
