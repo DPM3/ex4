@@ -21,11 +21,23 @@ Element  Grid::operator() (size_t i, size_t j) const {
 }
 
 Element& Grid::operator() (GraphPoint const& p) {
-	(*this)(p.x(), p.y());
+	return (*this)(p.x(), p.y());
 }
 
 Element  Grid::operator() (GraphPoint const& p) const {
-	(*this)(p.x(), p.y());
+	return (*this)(p.x(), p.y());
+}
+
+Element getNeighbor(GraphPoint p, Direction d) {
+	switch:
+		case UP:
+			return (*this)(p.x(), p.y() - 1);
+		case DOWN:
+			return (*this)(p.x(), p.y() + 1);
+		case RIGHT:
+			return (*this)(p.x() + 1, p.y());
+		case LEFT:
+			return (*this)(p.x() - 1, p.y());
 }
 
 size_t Grid::width() const {
