@@ -55,14 +55,12 @@ FolderManager::FolderManager(std::string const& stateFilePath) : m_folderPath(st
 }
 
 
-void FolderManager::add(std::string const& fileName, std::string const& fileSource) {
+void FolderManager::add(std::string const& fileName, std::string const& content) {
 	remove(m_files[++m_marker]);
 	m_files[m_marker] = fileName;
-	if (std::filesystem::exists(m_folderPath + "/" + fileName)) {
-		std::filesystem::copy_file(fileSource, m_folderPath + "/" +  fileName, std::filesystem::copy_options::overwrite_existing);
-	} else {
-		std::filesystem::copy_file(fileSource, m_folderPath + "/" +  fileName);
-	}
+	const std::string fileTarget = m_folderPath + "/" + fileName;
+	std::ofstream ofs {fileTarget};
+	ofs << content;
 }
 
 bool FolderManager::fileExists(std::string const& fileName) const {

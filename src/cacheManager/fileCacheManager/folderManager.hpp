@@ -43,7 +43,7 @@ public:
      * @param[in] fileName. the name of the file
      * @param[in] fileSource. the file's result
      */
-	void add(std::string const& fileName, std::string const& fileSource); //takes care of removing from cache last file
+	void add(std::string const& fileName, std::string const& content); //takes care of removing from cache last file
 
 	/**
      * @brief checks if file exists

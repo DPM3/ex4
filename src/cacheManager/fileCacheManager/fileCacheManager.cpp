@@ -10,8 +10,8 @@ FileCacheManager::FileCacheManager(std::string const& workPlace) : m_folderManag
 bool FileCacheManager::isInCache(OperatorID const& id) const {
 	return m_folderManager.fileExists(id.hash());
 }
-void FileCacheManager::addOp(OperatorID const& id, std::string const& resultPath) {
-	m_folderManager.add(id.hash(), resultPath);
+void FileCacheManager::addOp(OperatorID const& id, std::string const& result) {
+	m_folderManager.add(id.hash(), result);
 }
 std::string FileCacheManager::getResult(OperatorID const& id) const {
 	std::ifstream is {workPlace() +"/"+ id.hash()};
