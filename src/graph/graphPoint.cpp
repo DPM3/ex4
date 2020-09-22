@@ -2,7 +2,7 @@
 
 namespace server_side {
 
-GraphPoint::GraphPoint(size_t x = 0, size_t y = 0) : m_x{x}, m_y{y}{ }
+GraphPoint::GraphPoint(size_t x, size_t y) : m_x{x}, m_y{y}{ }
 
 size_t& GraphPoint::x() {
 	return m_x;
@@ -16,6 +16,13 @@ size_t GraphPoint::x() const {
 }
 size_t GraphPoint::y() const {
 	return m_y;
+}
+
+bool GraphPoint::operator==(GraphPoint other) {
+	return x() == other.x() && y() == other.y();
+}
+bool GraphPoint::operator!=(GraphPoint other) {
+	return !(*this == other);
 }
 
 }
