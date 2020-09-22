@@ -29,29 +29,43 @@ Element  Grid::operator() (GraphPoint const& p) const {
 	return (*this)(p.x(), p.y());
 }
 
-GraphPoint Grid::getNeighbor(GraphPoint p, Direction d) const {
+GraphPoint Grid::getNeighbor(GraphPoint const& p, Direction const& d) const {
 	switch (d) {
 		case Direction::UP:
 			if (p.y() - 1 < 0) {
-				throw std::runtime_error{"neighbor point does not exist"};
+				throw NeighborPointInvalid{"neighbor point does not exist"};
 			}
 			return GraphPoint{p.x(), p.y() - 1};
 		case Direction::DOWN:
 			if (p.y() + 1 >= height()) {
-				throw std::runtime_error{"neighbor point does not exist"};
+				throw NeighborPointInvalid{"neighbor point does not exist"};
 			}
 			return GraphPoint{p.x(), p.y() + 1};
 		case Direction::RIGHT:
 			if (p.x() + 1 >= width()) {
-				throw std::runtime_error{"neighbor point does not exist"};
+				throw NeighborPointInvalid{"neighbor point does not exist"};
 			}
 			return GraphPoint{p.x() + 1, p.y()};
 		case Direction::LEFT:
 			if (p.x() - 1 < 0) {
-				throw std::runtime_error{"neighbor point does not exist"};
+				throw NeighborPointInvalid{"neighbor point does not exist"};
 			}
 			return GraphPoint{p.x() - 1, p.y()};
 	}
+}
+
+std::vector<GraphPoint> Grid::adjPoints(GraphPoint const& p) const {
+	std::vector<GraphPoint> result (4); //should definitely improve run time, even if not all 4 slots are used
+	Direction allDirs[] = {Direction::UP, Direction::DOWN, Direction::LEFT, Direction::RIGHT};
+	for (auto d : allDirs) {
+		try {
+			GraphPoint adjUp = this->getNeighbor(p, d);
+			if ( !(*this)(adjUp).isBlock() ) {
+				result.emplace_back(adjUp);
+			}
+		} catch (NeighborPointInvalid&) { }
+	}
+	return result;
 }
 
 size_t Grid::width() const {

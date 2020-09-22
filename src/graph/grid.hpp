@@ -13,6 +13,11 @@ class Grid {
 	size_t m_width, m_height;
 	std::vector<Element> m_data;
 public:
+	//exceptions:
+	struct NeighborPointInvalid : public std::runtime_error {
+		using std::runtime_error::runtime_error; //borrow the constructor
+	};
+
 	Grid(std::initializer_list<std::initializer_list<Element>> init);
 
 	Element& operator() (size_t i, size_t j);
@@ -24,7 +29,8 @@ public:
 	size_t width() const;
 	size_t height() const;
 
-	GraphPoint getNeighbor(GraphPoint p, Direction d) const;
+	GraphPoint getNeighbor(GraphPoint const& p, Direction const& d) const;
+	std::vector<GraphPoint> adjPoints(GraphPoint const& p) const;
 };
 
 }
