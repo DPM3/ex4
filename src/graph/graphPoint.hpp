@@ -27,6 +27,7 @@ namespace std { //don't panic :)
 
 template<>
 struct hash<server_side::GraphPoint> {
+	size_t operator() (server_side::GraphPoint const& p) const;
 };
 
 }

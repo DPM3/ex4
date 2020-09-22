@@ -26,3 +26,11 @@ bool GraphPoint::operator!=(GraphPoint other) {
 }
 
 }
+
+namespace std {
+
+size_t hash<server_side::GraphPoint>::operator() (server_side::GraphPoint const& p) const {
+		return hash<size_t>{}(p.x()) ^ (hash<size_t>{}(p.y()) << 1) >> 1; //common way of hashing multiple objects together
+}
+
+}

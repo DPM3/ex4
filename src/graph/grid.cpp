@@ -1,5 +1,6 @@
 #include"grid.hpp"
 
+
 namespace server_side {
 
 Grid::Grid(std::initializer_list<std::initializer_list<Element>> init)
@@ -28,16 +29,29 @@ Element  Grid::operator() (GraphPoint const& p) const {
 	return (*this)(p.x(), p.y());
 }
 
-Element getNeighbor(GraphPoint p, Direction d) {
-	switch:
-		case UP:
-			return (*this)(p.x(), p.y() - 1);
-		case DOWN:
-			return (*this)(p.x(), p.y() + 1);
-		case RIGHT:
-			return (*this)(p.x() + 1, p.y());
-		case LEFT:
-			return (*this)(p.x() - 1, p.y());
+GraphPoint Grid::getNeighbor(GraphPoint p, Direction d) const {
+	switch (d) {
+		case Direction::UP:
+			if (p.y() - 1 < 0) {
+				throw std::runtime_error{"neighbor point does not exist"};
+			}
+			return GraphPoint{p.x(), p.y() - 1};
+		case Direction::DOWN:
+			if (p.y() + 1 >= height()) {
+				throw std::runtime_error{"neighbor point does not exist"};
+			}
+			return GraphPoint{p.x(), p.y() + 1};
+		case Direction::RIGHT:
+			if (p.x() + 1 >= width()) {
+				throw std::runtime_error{"neighbor point does not exist"};
+			}
+			return GraphPoint{p.x() + 1, p.y()};
+		case Direction::LEFT:
+			if (p.x() - 1 < 0) {
+				throw std::runtime_error{"neighbor point does not exist"};
+			}
+			return GraphPoint{p.x() - 1, p.y()};
+	}
 }
 
 size_t Grid::width() const {

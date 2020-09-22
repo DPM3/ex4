@@ -5,6 +5,7 @@
 
 #include"element.hpp"
 #include"graphPoint.hpp"
+#include"direction.hpp"
 
 namespace server_side {
 
@@ -22,6 +23,8 @@ public:
 
 	size_t width() const;
 	size_t height() const;
+
+	GraphPoint getNeighbor(GraphPoint p, Direction d) const;
 };
 
 }
