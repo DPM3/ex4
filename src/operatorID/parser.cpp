@@ -5,6 +5,12 @@
 #include<vector>
 
 #include"myTestOperatorID.hpp"
+#include"../graph/graphPoint.hpp"
+#include"../graph/graphPointParser.hpp"
+#include"../graph/gridParser.hpp"
+#include"pathFindBFS.hpp"
+#include"pathFindAStar.hpp"
+#include"pathFindDFS.hpp"
 
 namespace server_side {
 
@@ -54,6 +60,22 @@ OperatorID* OperatorIDParser::parseBody(std::string const& content) {
 	std::vector<std::string> lines;
 
 	for (char* word; (word = strsep(&iter, "\n")); lines.push_back(word)) { }
+	GraphPoint end   = parseGraphPoint(lines.back());
+	lines.pop_back();
+	GraphPoint start = parseGraphPoint(lines.back());
+	lines.pop_back();
+
+	Grid grid = parseGrid(lines);
+	switch (m_opType) {
+		case POIDS::BFS:
+			return new PathFindBFS{grid, start, end};
+		case POIDS::DFS:
+			return new PathFindDFS{grid, start, end};
+		case POIDS::AStar:
+			return new PathFindAStar{grid, start, end};
+		case POIDS::BestFS:
+			return nullptr; //TODO this class
+	}
 
 	free(crep);
 	return 0;

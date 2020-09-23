@@ -6,6 +6,6 @@
 
 namespace server_side {
 
-Grid parseGrid(std::string input);
+Grid parseGrid(std::vector<std::string> const& input);
 
 }

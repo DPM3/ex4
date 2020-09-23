@@ -3,13 +3,14 @@
 #include"clientHandler.hpp"
 #include"../solver/solver.hpp"
 #include"../cacheManager/cacheManager.hpp"
+#include"../operatorID/parser.hpp"
 
 namespace server_side {
 
 class MyClientHandler : public ClientHandler {
 	Solver* m_solver;
 	CacheManager* m_cacheManager;
-	mutable std::string m_fullMessage;
+	mutable OperatorIDParser m_idParser;
 public:
 	MyClientHandler(Solver* solver, CacheManager* cacheManager);
 	MyClientHandler(Solver&& solver, CacheManager&& cacheManager);

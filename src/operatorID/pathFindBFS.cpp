@@ -6,6 +6,7 @@
 #include<algorithm>
 
 #include"../graph/direction.hpp"
+#include"../sha1/sha1.hpp"
 
 namespace server_side {
 
@@ -53,6 +54,30 @@ std::string PathFindBFS::solve() const{
 		return result;
 	}
 
+}
+
+std::string PathFindBFS::hash() const {
+	std::string hashInput = "BFS";
+	for (int i = 0; i < m_grid.height(); ++i) {
+	for (int j = 0; j < m_grid.width (); ++j) {
+		if (m_grid(i,j).isBlock()) {
+			hashInput += "b ";
+		} else {
+			hashInput += std::to_string(m_grid(i,j).cost()) + " ";
+		}
+	}
+	}
+
+	hashInput += std::to_string(m_start.x()) + " ";
+	hashInput += std::to_string(m_start.y()) + " ";
+
+	hashInput += std::to_string(m_end.x()) + " ";
+	hashInput += std::to_string(m_end.y()) + " ";
+
+	//Now hashInput is a unique string for that specific OperatorID.
+	//We will safely hash it, to get a unique string.
+	//We use sha1, because this needs to be a very strong hash.
+	return sha1(hashInput);
 }
 
 }
