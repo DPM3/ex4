@@ -37,11 +37,10 @@ void MySerialServer::open(int port, ClientHandler const& c) {
 	}
 
 	std::thread serverAction {[=, &c]() {
-		int connectionfd;
 		int connectAddresslen = sizeof(connectAddress);
 		while (m_stop) {
-			if ((connectionfd = accept(sockfd, (struct sockaddr*)&connectAddress,
-							(socklen_t*)&connectAddresslen)) < 0) {
+			int connectionfd = accept(sockfd, (struct sockaddr*)&connectAddress, (socklen_t*)&connectAddresslen);
+			if (connectionfd < 0) {
 				throw std::system_error { errno, std::system_category() };
 			}
 			std::thread clientTalk {[=, &c]() {

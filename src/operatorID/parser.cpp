@@ -75,6 +75,7 @@ OperatorID* OperatorIDParser::parseBody(std::string const& content) {
 	switch (m_opType) {
 		case POIDS::BFS:
 			free(crep);
+			std::cout << "newwww" << std::endl;
 			return new PathFindBFS{grid, start, end};
 		case POIDS::DFS:
 			free(crep);

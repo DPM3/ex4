@@ -4,6 +4,7 @@
 #include<map>
 #include<unordered_map>
 #include<algorithm>
+#include<iostream>
 
 #include"../graph/direction.hpp"
 #include"../sha1/sha1.hpp"
@@ -11,6 +12,7 @@
 namespace server_side {
 
 std::string PathFindBFS::solve() const{
+	std::cout << "solveeeeeeeee" << std::endl;
 	std::queue<GraphPoint> q;
 	//gives direction to the previous point in a course from start point
 	std::unordered_map<GraphPoint, Direction> prevOnCourse{ {} };
@@ -60,10 +62,10 @@ std::string PathFindBFS::hash() const {
 	std::string hashInput = "BFS";
 	for (size_t i = 0; i < m_grid.height(); ++i) {
 	for (size_t j = 0; j < m_grid.width (); ++j) {
-		if (m_grid(i,j).isBlock()) {
+		if (m_grid(j,i).isBlock()) {
 			hashInput += "b ";
 		} else {
-			hashInput += std::to_string(m_grid(i,j).cost()) + " ";
+			hashInput += std::to_string(m_grid(j,i).cost()) + " ";
 		}
 	}
 	}

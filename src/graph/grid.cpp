@@ -18,11 +18,11 @@ Grid::Grid(size_t width, size_t height)
 	: m_width{width}, m_height{height}, m_data(m_width * m_height) { }
 
 Element& Grid::operator() (size_t i, size_t j) {
-	return m_data[i * width() + j];
+	return m_data.at(j * width() + i);
 }
 
 Element  Grid::operator() (size_t i, size_t j) const {
-	return m_data[i * width() + j];
+	return m_data.at(j * width() + i);
 }
 
 Element& Grid::operator() (GraphPoint const& p) {
