@@ -5,12 +5,15 @@
 namespace server_side {
 
 class PathFindBestFS : public PathFind {
-    using PathFind::m_grid;
-    using PathFind::m_start, PathFind::m_end;
+	using PathFind::m_grid;
+	using PathFind::m_start;
+	using PathFind::m_end;
 
-    distanceFromEnd(GraphPoint p);
+	int distanceFromEnd(GraphPoint p);
 public:
-    std::string solve() const override;
+	std::string solve() const override;
+	std::string hash () const override;
+	using PathFind::PathFind;
 };
 
 }

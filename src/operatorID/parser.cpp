@@ -12,6 +12,7 @@
 #include"pathFindBFS.hpp"
 #include"pathFindAStar.hpp"
 #include"pathFindDFS.hpp"
+#include"pathFindBestFS.hpp"
 
 namespace server_side {
 
@@ -84,8 +85,7 @@ OperatorID* OperatorIDParser::parseBody(std::string const& content) {
 			return new PathFindAStar{grid, start, end};
 		case POIDS::BestFS:
 			free(crep);
-			//return new PathFindBestFS{grid, start, end};TODO this class is not complete
-			return nullptr;
+			return new PathFindBestFS{grid, start, end};
 	}
 
 	free(crep);
