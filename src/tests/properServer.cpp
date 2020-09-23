@@ -37,7 +37,7 @@ int main() {
 
 	for (int i = 0; i < 2; ++i) {
 		std::string input;
-		std::cin >> input;
+		for (char c; input.size() < 2 || input.substr(input.size() - 2) != "\n\n"; std::cin.get(c), input += c) { }
 
 		if (send(sockfd, input.c_str(), input.size(), 0) < 0) {
 			close(sockfd);

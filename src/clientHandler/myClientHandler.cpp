@@ -18,6 +18,7 @@ void MyClientHandler::handleClient(std::istream& is, std::ostream& os) const {
 	std::cout << "input:\n" << input << std::endl;
 	if (input.substr(0,6) == "solve " || input.substr(0,6) == "solve\t") {
 		m_fullMessage = input;
+		os << "Version: 1.0.0" << std::endl;
 		return;
 	}
 	m_fullMessage += input;

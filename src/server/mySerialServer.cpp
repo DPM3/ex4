@@ -55,8 +55,9 @@ void MySerialServer::open(int port, ClientHandler const& c) {
 					}
 					buffer[recvLength] = '\0';
 
+					std::cout << "what server got:" << buffer << std::endl;
 					std::stringstream is;
-					is << std::string(buffer);
+					is << buffer;
 					std::stringstream os;
 
 					c.handleClient(is, os);
