@@ -70,11 +70,14 @@ OperatorID* OperatorIDParser::parseBody(std::string const& content) {
 		case POIDS::BFS:
 			return new PathFindBFS{grid, start, end};
 		case POIDS::DFS:
-			return new PathFindDFS{grid, start, end};
+			//return new PathFindDFS{grid, start, end}; TODO: this class is not complete
+			return nullptr;
 		case POIDS::AStar:
-			return new PathFindAStar{grid, start, end};
+			//return new PathFindAStar{grid, start, end}; TODO: this class is not complete
+			return nullptr;
 		case POIDS::BestFS:
-			return nullptr; //TODO this class
+			//return new PathFindBestFS{grid, start, end};TODO this class is not complete
+			return nullptr;
 	}
 
 	free(crep);
