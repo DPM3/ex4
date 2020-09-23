@@ -9,6 +9,7 @@ namespace server_side {
 class MyClientHandler : public ClientHandler {
 	Solver* m_solver;
 	CacheManager* m_cacheManager;
+	mutable std::string m_fullMessage;
 public:
 	MyClientHandler(Solver* solver, CacheManager* cacheManager);
 	MyClientHandler(Solver&& solver, CacheManager&& cacheManager);

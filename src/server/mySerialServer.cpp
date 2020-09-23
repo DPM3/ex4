@@ -44,26 +44,33 @@ void MySerialServer::open(int port, ClientHandler const& c) {
 							(socklen_t*)&connectAddresslen)) < 0) {
 				throw std::system_error { errno, std::system_category() };
 			}
-			std::stringstream is;
-			char buffer[1024];
-			int recvLength;
+			std::thread clientTalk {[=, &c]() {
+				for(int i = 0; i < 2; ++i) {
+					char buffer[1024];
+					int recvLength = recv(connectionfd, buffer, 1024, 0);
+					if (recvLength < 0) {
+						close(connectionfd);
+						close(sockfd);
+						throw std::system_error { errno, std::system_category() };
+					}
+					buffer[recvLength] = '\0';
 
-			if ((recvLength = recv(connectionfd, buffer, 1024, 0)) < 0) {
+					std::stringstream is;
+					is << std::string(buffer);
+					std::stringstream os;
+
+					c.handleClient(is, os);
+
+					std::string s = os.str();
+					if (send(connectionfd, s.c_str(), s.size(), 0) < 0) {
+						close(connectionfd);
+						close(sockfd);
+						throw std::system_error { errno, std::system_category() };
+					}
+				}
 				close(connectionfd);
-				close(sockfd);
-				throw std::system_error { errno, std::system_category() };
-			}
-			buffer[recvLength] = '\0';
-			is << std::string(buffer);
-			std::stringstream os;
-			c.handleClient(is, os);
-			std::string s = os.str();
-			if (send(connectionfd, s.c_str(), s.size(), 0) < 0) {
-				close(connectionfd);
-				close(sockfd);
-				throw std::system_error { errno, std::system_category() };
-			}
-			close(connectionfd);
+			}};
+			clientTalk.detach();
 		}
 		close(sockfd);
 	}};
