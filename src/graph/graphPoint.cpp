@@ -32,7 +32,7 @@ Direction GraphPoint::dirTo(GraphPoint other) const {
 	if (xDist == 1 && yDist == 0) {
 		return Direction::LEFT;
 	} else if (xDist == -1 && yDist == 0) {
-		return Direciton::RIGHT;
+		return Direction::RIGHT;
 	} else if (xDist == 0 && yDist == 1) {
 		return Direction::UP;
 	} else if (xDist == 0 && yDist == -1) {

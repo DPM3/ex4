@@ -3,14 +3,15 @@
 #include<cstring>
 #include<string>
 #include<vector>
+#include<iostream>
 
 #include"myTestOperatorID.hpp"
 #include"../graph/graphPoint.hpp"
 #include"../graph/graphPointParser.hpp"
 #include"../graph/gridParser.hpp"
 #include"pathFindBFS.hpp"
-#include"pathFindAStar.hpp"
-#include"pathFindDFS.hpp"
+//#include"pathFindAStar.hpp"
+//#include"pathFindDFS.hpp"
 
 namespace server_side {
 
@@ -59,7 +60,12 @@ OperatorID* OperatorIDParser::parseBody(std::string const& content) {
 
 	std::vector<std::string> lines;
 
-	for (char* word; (word = strsep(&iter, "\n")); lines.push_back(word)) { }
+	for (char* word; (word = strsep(&iter, "\n"));) {
+		lines.push_back(word);
+	}
+	lines.pop_back();
+	lines.pop_back(); //get rid of two empty lines
+
 	GraphPoint end   = parseGraphPoint(lines.back());
 	lines.pop_back();
 	GraphPoint start = parseGraphPoint(lines.back());
@@ -68,14 +74,18 @@ OperatorID* OperatorIDParser::parseBody(std::string const& content) {
 	Grid grid = parseGrid(lines);
 	switch (m_opType) {
 		case POIDS::BFS:
+			free(crep);
 			return new PathFindBFS{grid, start, end};
 		case POIDS::DFS:
+			free(crep);
 			//return new PathFindDFS{grid, start, end}; TODO: this class is not complete
 			return nullptr;
 		case POIDS::AStar:
+			free(crep);
 			//return new PathFindAStar{grid, start, end}; TODO: this class is not complete
 			return nullptr;
 		case POIDS::BestFS:
+			free(crep);
 			//return new PathFindBestFS{grid, start, end};TODO this class is not complete
 			return nullptr;
 	}

@@ -15,13 +15,13 @@ MyClientHandler::MyClientHandler(Solver&& solver, CacheManager&& cacheManager)
 
 void MyClientHandler::handleClient(std::istream& is, std::ostream& os) const {
 	std::string input ((std::istreambuf_iterator<char>(is)), std::istreambuf_iterator<char>());
-	std::cout << "input:\n" << input << std::endl;
 	if (input.substr(0,6) == "solve " || input.substr(0,6) == "solve\t") {
 		m_idParser.parseHeader(input);
 		os << "Version: 1.0.0" << std::endl;
 		return;
 	}
 	std::unique_ptr<OperatorID> op {m_idParser.parseBody(input)};
+	std::cout << "parsed header!" << std::endl;
 	if (m_cacheManager->isInCache(*op)) {
 		os << m_cacheManager->getResult(*op);
 	} else {

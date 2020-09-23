@@ -58,8 +58,8 @@ std::string PathFindBFS::solve() const{
 
 std::string PathFindBFS::hash() const {
 	std::string hashInput = "BFS";
-	for (int i = 0; i < m_grid.height(); ++i) {
-	for (int j = 0; j < m_grid.width (); ++j) {
+	for (size_t i = 0; i < m_grid.height(); ++i) {
+	for (size_t j = 0; j < m_grid.width (); ++j) {
 		if (m_grid(i,j).isBlock()) {
 			hashInput += "b ";
 		} else {

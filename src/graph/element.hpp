@@ -6,7 +6,7 @@ class Element {
 	float m_cost;
 	bool m_isBlock;
 public:
-	Element(int cost = 0);
+	Element(float cost = 0);
 
 	static Element block(); //to create a block
 

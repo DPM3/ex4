@@ -1,6 +1,7 @@
 #include"gridParser.hpp"
 
 #include<cstring>
+#include<iostream>
 
 #include"element.hpp"
 
@@ -14,23 +15,24 @@ Grid parseGrid(std::vector<std::string> const& input) {
 	size_t height = std::atoi(strsep(&iter, "\n,"));
 	size_t width = std::atoi(strsep(&iter, "\n,"));
 	Grid result {width, height};
+	free(crep);
 
 	//parse grid values
 	int i = 0;
-	for (std::string const& line : input) {
+	for (auto it = input.begin() + 1; it != input.end(); ++it, ++i) {
+		std::string const& line = *it;
 		char* lineCrep = strdup(line.data());
-		char* lineIter = crep;
+		char* lineIter = lineCrep;
 		int j = 0;
 		for (char* elem; (elem  = strsep(&lineIter, ",")); ++j) {
 			if (!std::strcmp(elem, "b")) {
-				result(i,j) = Element::block();
+				result(j,i) = Element::block();
 			} else {
-				result(i,j) = std::atof(elem);
+				result(j,i) = std::atof(elem);
 			}
 		}
 		free(lineCrep);
 	}
-	free(crep);
 	return result;
 }
 

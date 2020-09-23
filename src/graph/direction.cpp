@@ -11,6 +11,7 @@ std::string tostring(Direction dir) {
 		case Direction::RIGHT:
 			return "Right";
 	}
+	return "this will never happen!";
 }
 
 Direction opposite(Direction dir) {
@@ -24,4 +25,5 @@ Direction opposite(Direction dir) {
 		case Direction::LEFT:
 			return Direction::RIGHT;
 	}
+	return Direction::DOWN; //will never happen!
 }

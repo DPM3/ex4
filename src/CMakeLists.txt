@@ -20,16 +20,36 @@ add_library(mySerialServer      SHARED server/mySerialServer.cpp)
 
 add_library(myTestClientHandler SHARED clientHandler/myTestClientHandler.cpp)
 
-add_library(myTestOperatorID    SHARED operatorID/myTestOperatorID.cpp)
+add_library(sha1                SHARED sha1/sha1.cpp)
+
+add_library(direction           SHARED graph/direction.cpp)
+add_library(graphPoint          SHARED graph/graphPoint.cpp)
+target_link_libraries(graphPoint direction)
+add_library(element             SHARED graph/element.cpp)
+add_library(grid                SHARED graph/grid.cpp)
+target_link_libraries(grid element graphPoint)
+
+add_library(parseGraphPoint     SHARED graph/graphPointParser.cpp)
+target_link_libraries(parseGraphPoint graphPoint)
+add_library(parseGrid           SHARED graph/gridParser.cpp)
+target_link_libraries(parseGrid grid)
+
+add_library(pathFind            SHARED operatorID/pathFind.cpp)
+target_link_libraries(pathFind graphPoint grid)
+add_library(pathFindBFS         SHARED operatorID/pathFindBFS.cpp)
+target_link_libraries(pathFindBFS sha1 grid pathFind)
+
 add_library(operatorIDParser    SHARED operatorID/parser.cpp)
+target_link_libraries(operatorIDParser pathFindBFS grid graphPoint parseGrid parseGraphPoint)
+
 add_library(myClientHandler     SHARED clientHandler/myClientHandler.cpp)
-target_link_libraries(myClientHandler myTestOperatorID operatorIDParser)
+target_link_libraries(myClientHandler operatorIDParser)
 
 add_library(mySolver            SHARED solver/mySolver.cpp)
 
 add_library(fileCacheManager    SHARED cacheManager/fileCacheManager/fileCacheManager.cpp)
 add_library(folderManager       SHARED cacheManager/fileCacheManager/folderManager.cpp)
-target_link_libraries(fileCacheManager folderManager myTestOperatorID)
+target_link_libraries(fileCacheManager folderManager)
 
 
 add_executable(test_basicServer tests/basicServer.cpp)

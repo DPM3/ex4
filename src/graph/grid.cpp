@@ -1,5 +1,7 @@
 #include"grid.hpp"
 
+#include<iostream>
+
 
 namespace server_side {
 
@@ -34,7 +36,7 @@ Element  Grid::operator() (GraphPoint const& p) const {
 GraphPoint Grid::getNeighbor(GraphPoint const& p, Direction const& d) const {
 	switch (d) {
 		case Direction::UP:
-			if (p.y() - 1 < 0) {
+			if ((long int)p.y() - 1 < 0) {
 				throw NeighborPointInvalid{"neighbor point does not exist"};
 			}
 			return GraphPoint{p.x(), p.y() - 1};
@@ -49,23 +51,29 @@ GraphPoint Grid::getNeighbor(GraphPoint const& p, Direction const& d) const {
 			}
 			return GraphPoint{p.x() + 1, p.y()};
 		case Direction::LEFT:
-			if (p.x() - 1 < 0) {
+			if ((long int)p.x() - 1 < 0) {
 				throw NeighborPointInvalid{"neighbor point does not exist"};
 			}
 			return GraphPoint{p.x() - 1, p.y()};
 	}
+	return GraphPoint{}; //will never happen!
 }
 
 std::vector<GraphPoint> Grid::adjPoints(GraphPoint const& p) const {
-	std::vector<GraphPoint> result (4); //should definitely improve run time, even if not all 4 slots are used
+	std::vector<GraphPoint> result;
 	Direction allDirs[] = {Direction::UP, Direction::DOWN, Direction::LEFT, Direction::RIGHT};
 	for (auto d : allDirs) {
 		try {
-			GraphPoint adjUp = this->getNeighbor(p, d);
-			if ( !(*this)(adjUp).isBlock() ) {
-				result.emplace_back(adjUp);
+			GraphPoint adj = getNeighbor(p, d);
+			if ( !((*this)(adj).isBlock()) ) {
+				std::cout << (*this)(adj).isBlock() << std::endl;
+				result.push_back(adj);
 			}
 		} catch (NeighborPointInvalid&) { }
+	}
+	std::cout << "ajdacent points to: " <<p.x() << ", " << p.y() << std::endl;
+	for (auto d : result) {
+		std::cout << d.x() << ", " << d.y() << std::endl;
 	}
 	return result;
 }
