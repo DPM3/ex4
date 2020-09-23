@@ -37,7 +37,7 @@ std::string PathFindBestFS::solve() const{
 		}
 
 		GraphPoint p = std::get<0>(current);
-		l.pop_front();
+		l.remove(current);
 
 		//this loop checks for adjacent points to p,
 		//and if they havn't been scanned yet by this very loop, then assign the dist and prev for that point.
