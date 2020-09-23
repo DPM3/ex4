@@ -10,7 +10,6 @@ class PathFindAStar : public PathFind {
 
 	distanceFromEnd(GraphPoint p);
 public:
-    PathFindAStar(Grid grid, Point start, Point end);
     std::string solve() const override;
 };
 

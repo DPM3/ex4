@@ -4,9 +4,11 @@
 
 namespace server_side {
 
-class PathFindDFS : public PathFind {
+class PathFindBestFS : public PathFind {
     using PathFind::m_grid;
     using PathFind::m_start, PathFind::m_end;
+
+    distanceFromEnd(GraphPoint p);
 public:
     std::string solve() const override;
 };
