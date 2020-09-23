@@ -9,7 +9,7 @@ class PathFindBestFS : public PathFind {
 	using PathFind::m_start;
 	using PathFind::m_end;
 
-	int distanceFromEnd(GraphPoint p);
+	int distanceFromEnd(GraphPoint p) const;
 public:
 	std::string solve() const override;
 	std::string hash () const override;

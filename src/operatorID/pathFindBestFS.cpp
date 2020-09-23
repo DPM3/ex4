@@ -11,7 +11,7 @@
 
 namespace server_side {
 
-int PathFindBestFS::distanceFromEnd(GraphPoint p) {
+int PathFindBestFS::distanceFromEnd(GraphPoint p) const {
 	return 10 * (abs((int)p.x() - (int)m_end.x()) + abs((int)p.y() - (int)m_end.y())) -
 			6 * std::min(abs((int)p.x() - (int)m_end.x()), abs((int)p.y() - (int)m_end.y()));
 }
@@ -31,7 +31,7 @@ std::string PathFindBestFS::solve() const{
 		std::pair<GraphPoint, int> current = l.front();
 
 		for (auto pair : l) {
-			if (std::get<1>(pair) < std::get<1>(current)) {
+			if (distanceFromEnd(std::get<0>(pair)) < distanceFromEnd(std::get<0>(current))) {
 				current = pair;
 			}
 		}
