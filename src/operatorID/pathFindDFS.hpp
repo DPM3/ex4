@@ -9,6 +9,8 @@ class PathFindDFS : public PathFind {
     using PathFind::m_start, PathFind::m_end;
 public:
     std::string solve() const override;
+    std::string hash () const override;
+    using PathFind::PathFind;
 };
 
 }
