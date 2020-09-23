@@ -10,8 +10,8 @@
 namespace server_side {
 
 int PathFinderAStar::distanceFromEnd(GraphPoint p) {
-	return 10 * (abs(p.getX() - m_end.getX()) + abs(p.getY() - m_end.getY())) -
-			6 * std::min(abs(p.getX() - m_end.getX()), abs(p.getY() - m_end.getY()));
+	return 10 * (abs(p.x() - m_end.x()) + abs(p.y() - m_end.y())) -
+			6 * std::min(abs(p.x() - m_end.y()), abs(p.y() - m_end.y()));
 }
 
 std::string PathFindAStar::solve() const{
