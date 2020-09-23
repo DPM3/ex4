@@ -40,9 +40,11 @@ add_library(pathFindBFS         SHARED operatorID/pathFindBFS.cpp)
 target_link_libraries(pathFindBFS sha1 grid pathFind)
 add_library(pathFindDFS         SHARED operatorID/pathFindDFS.cpp)
 target_link_libraries(pathFindDFS sha1 grid pathFind)
+add_library(pathFindAStar         SHARED operatorID/pathFindAStar.cpp)
+target_link_libraries(pathFindAStar sha1 grid pathFind)
 
 add_library(operatorIDParser    SHARED operatorID/parser.cpp)
-target_link_libraries(operatorIDParser pathFindBFS pathFindDFS grid graphPoint parseGrid parseGraphPoint)
+target_link_libraries(operatorIDParser pathFindAStar pathFindBFS pathFindDFS grid graphPoint parseGrid parseGraphPoint)
 
 add_library(myClientHandler     SHARED clientHandler/myClientHandler.cpp)
 target_link_libraries(myClientHandler operatorIDParser)

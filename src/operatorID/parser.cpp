@@ -10,7 +10,7 @@
 #include"../graph/graphPointParser.hpp"
 #include"../graph/gridParser.hpp"
 #include"pathFindBFS.hpp"
-//#include"pathFindAStar.hpp"
+#include"pathFindAStar.hpp"
 #include"pathFindDFS.hpp"
 
 namespace server_side {
@@ -81,8 +81,7 @@ OperatorID* OperatorIDParser::parseBody(std::string const& content) {
 			return new PathFindDFS{grid, start, end};
 		case POIDS::AStar:
 			free(crep);
-			//return new PathFindAStar{grid, start, end}; TODO: this class is not complete
-			return nullptr;
+			return new PathFindAStar{grid, start, end};
 		case POIDS::BestFS:
 			free(crep);
 			//return new PathFindBestFS{grid, start, end};TODO this class is not complete
