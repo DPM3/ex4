@@ -40,7 +40,7 @@ def refresh_socket(s):
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('127.0.0.1', port))
-for i in range(500):
+for i in range(50):
     grid = gen_grid()
     s.sendall(b'solve find-graph-path BFS\n\n')
     result = send_grid(s, grid).decode().split('\n')[-1].split(',')
@@ -60,7 +60,11 @@ for i in range(500):
     s.sendall(b'solve find-graph-path A*\n\n')
     result = send_grid(s, grid).decode().split('\n')[-1].split(',')
     AStar_results.append([result[0], len(result) - 2, len(grid) * len(grid[0])])
-    s = refresh_socket(s)
+    if i == 49:
+        s.close()
+        break
+    else:
+        s = refresh_socket(s)
 
 print("BFS:\n")
 for pair in BFS_results:

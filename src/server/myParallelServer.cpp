@@ -1,4 +1,4 @@
-#include"./mySerialServer.hpp"
+#include"myParallelServer.hpp"
 
 #include<arpa/inet.h>
 #include<errno.h>
@@ -12,7 +12,7 @@
 
 namespace server_side {
 
-void MySerialServer::open(int port, ClientHandler const& c) {
+void MyParallelServer::open(int port, ClientHandler const& c) {
 	const int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0) {
 		throw std::system_error { errno, std::system_category() };
@@ -112,12 +112,13 @@ void MySerialServer::open(int port, ClientHandler const& c) {
 				}
 				close(connectionfd);
 			}};
+			clientAction.detach();
 		}
 		close(sockfd);
 	}};
 	serverAction.detach();
 }
-void MySerialServer::stop() {
+void MyParallelServer::stop() {
 	m_stop = true;
 }
 

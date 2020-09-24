@@ -17,8 +17,8 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 add_library(mySerialServer      SHARED server/mySerialServer.cpp)
+add_library(myParallelServer      SHARED server/myParallelServer.cpp)
 
-add_library(myTestClientHandler SHARED clientHandler/myTestClientHandler.cpp)
 
 add_library(sha1                SHARED sha1/sha1.cpp)
 
@@ -58,9 +58,6 @@ add_library(folderManager       SHARED cacheManager/fileCacheManager/folderManag
 target_link_libraries(fileCacheManager folderManager)
 
 
-add_executable(test_basicServer tests/basicServer.cpp)
-target_link_libraries(test_basicServer mySerialServer myTestClientHandler Threads::Threads)
-
 add_executable(test_betterServer tests/betterServer.cpp)
 target_link_libraries(test_betterServer mySerialServer myClientHandler mySolver fileCacheManager Threads::Threads)
 
@@ -68,4 +65,4 @@ add_executable(test_properServer tests/properServer.cpp)
 target_link_libraries(test_properServer mySerialServer myClientHandler mySolver fileCacheManager Threads::Threads)
 
 add_executable(ex4 main.cpp)
-target_link_libraries(ex4 mySerialServer myClientHandler mySolver fileCacheManager Threads::Threads)
+target_link_libraries(ex4 myParallelServer mySerialServer myClientHandler mySolver fileCacheManager Threads::Threads)
