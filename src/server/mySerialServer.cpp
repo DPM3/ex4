@@ -4,6 +4,8 @@
 #include<errno.h>
 #include<sys/types.h>
 #include<sys/socket.h>
+#include<sys/select.h>
+#include<fcntl.h>
 #include<unistd.h>
 #include<thread>
 #include<sstream>
@@ -15,7 +17,7 @@ void MySerialServer::open(int port, ClientHandler const& c) {
 	if (sockfd < 0) {
 		throw std::system_error { errno, std::system_category() };
 	}
-	int True = 1;
+	const int True = 1;
 	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &True, sizeof(int));
 
 	sockaddr_in connectAddress{};
@@ -36,40 +38,50 @@ void MySerialServer::open(int port, ClientHandler const& c) {
 		throw std::system_error { errno, std::system_category() };
 	}
 
+	//set sockfd to non-blocking
+	int opt;
+	if ((opt = fcntl (sockfd, F_GETFL, NULL)) < 0) {
+		close(sockfd);
+		throw std::system_error { errno, std::system_category() };
+	}
+	if (fcntl (sockfd, F_SETFL, opt | O_NONBLOCK) < 0) {
+		close(sockfd);
+		throw std::system_error { errno, std::system_category() };
+	}
+
 	std::thread serverAction {[=, &c]() {
 		int connectAddresslen = sizeof(connectAddress);
 		while (m_stop) {
 			int connectionfd = accept(sockfd, (struct sockaddr*)&connectAddress, (socklen_t*)&connectAddresslen);
-			if (connectionfd < 0) {
+			if (connectionfd == EWOULDBLOCK) {
+				continue;
+			} else if (connectionfd < 0) {
 				throw std::system_error { errno, std::system_category() };
 			}
-			std::thread clientTalk {[=, &c]() {
-				for(int i = 0; i < 2; ++i) {
-					char buffer[1024];
-					int recvLength = recv(connectionfd, buffer, 1024, 0);
-					if (recvLength < 0) {
-						close(connectionfd);
-						close(sockfd);
-						throw std::system_error { errno, std::system_category() };
-					}
-					buffer[recvLength] = '\0';
-
-					std::stringstream is;
-					is << buffer;
-					std::stringstream os;
-
-					c.handleClient(is, os);
-
-					std::string s = os.str();
-					if (send(connectionfd, s.c_str(), s.size(), 0) < 0) {
-						close(connectionfd);
-						close(sockfd);
-						throw std::system_error { errno, std::system_category() };
-					}
+			for(int i = 0; i < 2; ++i) {
+				char buffer[1024];
+				int recvLength = recv(connectionfd, buffer, 1024, 0);
+				if (recvLength < 0) {
+					close(connectionfd);
+					close(sockfd);
+					throw std::system_error { errno, std::system_category() };
 				}
-				close(connectionfd);
-			}};
-			clientTalk.detach();
+				buffer[recvLength] = '\0';
+
+				std::stringstream is;
+				is << buffer;
+				std::stringstream os;
+
+				c.handleClient(is, os);
+
+				std::string s = os.str();
+				if (send(connectionfd, s.c_str(), s.size(), 0) < 0) {
+					close(connectionfd);
+					close(sockfd);
+					throw std::system_error { errno, std::system_category() };
+				}
+			}
+			close(connectionfd);
 		}
 		close(sockfd);
 	}};
