@@ -30,4 +30,8 @@ void MyClientHandler::handleClient(std::istream& is, std::ostream& os) const {
 	}
 }
 
+ClientHandler* MyClientHandler::clone() const {
+	return new MyClientHandler(*this);
+}
+
 }

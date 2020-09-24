@@ -40,32 +40,40 @@ def refresh_socket(s):
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('127.0.0.1', port))
-for i in range(50):
+for i in range(500):
     grid = gen_grid()
     s.sendall(b'solve find-graph-path BFS\n\n')
     result = send_grid(s, grid).decode().split('\n')[-1].split(',')
-    BFS_results.append([result[0], len(result) - 2])
+    BFS_results.append([result[0], len(result) - 2, len(grid) * len(grid[0])])
     s = refresh_socket(s)
 
     s.sendall(b'solve find-graph-path DFS\n\n')
     result = send_grid(s, grid).decode().split('\n')[-1].split(',')
-    DFS_results.append([result[0], len(result) - 2])
+    DFS_results.append([result[0], len(result) - 2, len(grid) * len(grid[0])])
     s = refresh_socket(s)
 
     s.sendall(b'solve find-graph-path BestFS\n\n')
     result = send_grid(s, grid).decode().split('\n')[-1].split(',')
-    BestFS_results.append([result[0], len(result) - 2])
+    BestFS_results.append([result[0], len(result) - 2, len(grid) * len(grid[0])])
     s = refresh_socket(s)
 
     s.sendall(b'solve find-graph-path A*\n\n')
     result = send_grid(s, grid).decode().split('\n')[-1].split(',')
-    AStar_results.append([result[0], len(result) - 2])
+    AStar_results.append([result[0], len(result) - 2, len(grid) * len(grid[0])])
     s = refresh_socket(s)
 
 print("BFS:\n")
 for pair in BFS_results:
-    print("[ " + str(int(pair[0])) + ", " + str(int(pair[1])) + " ]")
+    print(str(int(pair[0])) + "," + str(int(pair[1])) + "," + str(pair[2]))
 
 print("DFS:\n")
 for pair in DFS_results:
-    print("[ " + str(int(pair[0])) + ", " + str(int(pair[1])) + " ]")
+    print(str(int(pair[0])) + "," + str(int(pair[1])) + "," + str(pair[2]))
+
+print("A*:\n")
+for pair in AStar_results:
+    print(str(int(pair[0])) + "," + str(int(pair[1])) + "," + str(pair[2]))
+
+print("BestFS*:\n")
+for pair in BestFS_results:
+    print(str(int(pair[0])) + "," + str(int(pair[1])) + "," + str(pair[2]))

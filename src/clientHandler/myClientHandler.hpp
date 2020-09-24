@@ -15,6 +15,7 @@ public:
 	MyClientHandler(Solver* solver, CacheManager* cacheManager);
 	MyClientHandler(Solver&& solver, CacheManager&& cacheManager);
 	void handleClient(std::istream& is, std::ostream& os) const override;
+	ClientHandler* clone() const override;
 };
 
 }
