@@ -16,17 +16,36 @@ MyClientHandler::MyClientHandler(Solver&& solver, CacheManager&& cacheManager)
 void MyClientHandler::handleClient(std::istream& is, std::ostream& os) const {
 	std::string input ((std::istreambuf_iterator<char>(is)), std::istreambuf_iterator<char>());
 	if (input.substr(0,6) == "solve " || input.substr(0,6) == "solve\t") {
-		m_idParser.parseHeader(input);
+		int status = m_idParser.parseHeader(input);
 		os << "Version: 1.0.0" << std::endl;
+		os << "status: " << status << std::endl;
+		os << "response-length: 0" << std::endl;
+		os << std::endl << std::endl;
 		return;
 	}
 	std::unique_ptr<OperatorID> op {m_idParser.parseBody(input)};
 	if (m_cacheManager->isInCache(*op)) {
 		os << m_cacheManager->getResult(*op);
 	} else {
-		std::string result = m_solver->solve(*op);
-		m_cacheManager->addOp(*op, result);
+		os << "Version: 1.0.0" << std::endl;
+		std::string result;
+		try {
+		result = m_solver->solve(*op);
+		} catch(...) {
+			os << "status: 2" << std::endl;
+			os << "response-length: 0" << std::endl;
+			return;
+		}
+		if (result == "") {
+			os << "status: 1" << std::endl;
+			os << "response-length: 0" << std::endl;
+			return;
+		}
+		os << "status: 0" << std::endl;
+		os << "response-length: " << result.size() << std::endl;
 		os << result;
+		os << std::endl << std::endl;
+		m_cacheManager->addOp(*op, result);
 	}
 }
 

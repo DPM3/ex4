@@ -16,6 +16,9 @@ We made a parser that recieves the information from the server and the creates a
 	grid to represent the graph.
 
 ## server error codes:
+0 - it worked!
+1 - No path Available
+2 - an error occured!(exception thrown)
 
 ## Distance function:
 Instead of just calculating the steps it takes to get to the end we used this
