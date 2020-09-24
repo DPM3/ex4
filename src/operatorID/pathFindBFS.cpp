@@ -12,7 +12,6 @@
 namespace server_side {
 
 std::string PathFindBFS::solve() const{
-	std::cout << "solveeeeeeeee" << std::endl;
 	std::queue<GraphPoint> q;
 	//gives direction to the previous point in a course from start point
 	std::unordered_map<GraphPoint, Direction> prevOnCourse{ {} };

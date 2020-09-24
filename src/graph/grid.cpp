@@ -66,14 +66,9 @@ std::vector<GraphPoint> Grid::adjPoints(GraphPoint const& p) const {
 		try {
 			GraphPoint adj = getNeighbor(p, d);
 			if ( !((*this)(adj).isBlock()) ) {
-				std::cout << (*this)(adj).isBlock() << std::endl;
 				result.push_back(adj);
 			}
 		} catch (NeighborPointInvalid&) { }
-	}
-	std::cout << "ajdacent points to: " <<p.x() << ", " << p.y() << std::endl;
-	for (auto d : result) {
-		std::cout << d.x() << ", " << d.y() << std::endl;
 	}
 	return result;
 }

@@ -21,9 +21,7 @@ void MyClientHandler::handleClient(std::istream& is, std::ostream& os) const {
 		return;
 	}
 	std::unique_ptr<OperatorID> op {m_idParser.parseBody(input)};
-	std::cout << "parsed header!" << std::endl;
 	if (m_cacheManager->isInCache(*op)) {
-		std::cout << "not in cache" << std::endl;
 		os << m_cacheManager->getResult(*op);
 	} else {
 		std::string result = m_solver->solve(*op);

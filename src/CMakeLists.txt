@@ -66,3 +66,6 @@ target_link_libraries(test_betterServer mySerialServer myClientHandler mySolver 
 
 add_executable(test_properServer tests/properServer.cpp)
 target_link_libraries(test_properServer mySerialServer myClientHandler mySolver fileCacheManager Threads::Threads)
+
+add_executable(ex4 main.cpp)
+target_link_libraries(ex4 mySerialServer myClientHandler mySolver fileCacheManager Threads::Threads)
